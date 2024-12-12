@@ -1,0 +1,7 @@
+*.map
+*.lst
+*.elf
+*.bin
+*.hex
+demo.gif
+demo.mp4
