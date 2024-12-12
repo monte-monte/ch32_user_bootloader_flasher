@@ -81,7 +81,7 @@ int flash_write(uint8_t* addr, uint8_t* data, uint32_t len, bool erase) {
   if (!len) return -3;
 	if (len > 64) len = 64;
   int ret = 0;
-	
+
   if (FLASH->CTLR & 0x8080) {
     ret = -4;
     #ifdef DEBUG_FLASH
@@ -166,9 +166,9 @@ int flash_write_bulk(uint8_t* addr, uint8_t* data, uint32_t len, bool erase) {
 	}
 
 	if (ret && ret > -3) {
-		printf("\nError erasing block: %d\n", len - left);
+		printf("\nError erasing block: %lu\n", len - left);
 	} else if (ret) {
-		printf("\nError writing block: %d\n", len - left);
+		printf("\nError writing block: %lu\n", len - left);
 	}
 
   return ret;

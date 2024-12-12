@@ -254,6 +254,12 @@ int main() {
 		case 0:
 			if (dm_unlocked) {	// Only print UI if there is someone to read it
 				printf("\n\n");
+				if (bootloader_image.binary_size > 1920) {
+					printf("Bootloader image is bigger than BOOT area.\nExiting\n\n");
+					ui_state = 11;
+					break;
+				}
+
 				int backup = check_backup();
 				// printf("foo 0x%x + 0x%x\n", bootloader_image.binary_addr, bootloader_image.binary_size);
 				if (check_bootloader()) {
