@@ -7,7 +7,7 @@ It is an interactive tool that requires you to use USB terminal either with mini
 
 # To use:
 
-``git clone https://github.com/monte-monte/ch32-user-bootloader-flasher/ --recursive``
+``git clone https://github.com/monte-monte/ch32_user_bootloader_flasher/ --recursive``
 
 ``ch32-user-bootloader-flasher``
 
