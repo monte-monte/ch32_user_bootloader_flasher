@@ -7,17 +7,17 @@ It is an interactive tool that requires you to use USB terminal either with mini
 
 # To use:
 
-``git clone https://github.com/monte-monte/ch32_user_bootloader_flasher/ --recursive``
+``git clone https://github.com/monte-monte/ch32_user_bootloader_flasher.git --recursive``
 
-``ch32-user-bootloader-flasher``
+``cd ch32_user_bootloader_flasher``
 
 Place your bootloader binary as a ``bootloader.bin`` file in this folder (make sure that it's not bigger than 1920 bytes).
 
-``make``
+``make clean all``
 
-``make flash``
+``./ch32v003fun/minichlink/minichlink -w flasher.bin flash -c 0x1209b003``
 
-``./ch32v003/minichlink/minichlink -kT -c 0x1209d003``
+``./ch32v003fun/minichlink/minichlink -kT -c 0x1209d003``
 
 or open Google Chrome or any other Chromium-based browser and go to https://subjectiverealitylabs.com/WeblinkUSB/ press ``t`` button in the UI.
 
