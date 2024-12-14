@@ -90,7 +90,7 @@ int flash_write(uint8_t* addr, uint8_t* data, uint32_t len, bool erase) {
   } else {
 		uint8_t buffer[64];
 		uint32_t* address = (uint32_t*)addr;
-		uint32_t* data_ptr = (uint32_t*)data;
+		// uint32_t* data_ptr = (uint32_t*)data;
 		if (!(((intptr_t)addr & 63) == 0 && (len & 63) == 0)) {
 			// printf("doing stuff... %08x-%d %d-%d\n", (intptr_t)addr, ((intptr_t)addr & 63), len, (len & 63));
 			address = (uint32_t*)(((uintptr_t)addr / 64) * 64);
@@ -101,7 +101,8 @@ int flash_write(uint8_t* addr, uint8_t* data, uint32_t len, bool erase) {
 				else if ((len + diff) > n) buffer[n] = data[n];
 				else buffer[n] = addr[n - diff];
 			}
-			data_ptr = (uint32_t*)buffer;
+			// data_ptr = (uint32_t*)buffer;
+			data = (uint32_t*)buffer;
 		}
 
 		if (erase) ret = flash_erase(address);
@@ -116,7 +117,8 @@ int flash_write(uint8_t* addr, uint8_t* data, uint32_t len, bool erase) {
     while( FLASH->STATR & FLASH_STATR_BSY );  // No real need for this.
     int i;
     for (i = 0; i < 16; i++) {
-			address[i] = data_ptr[i]; //Write to the memory
+			address[i] = *((uint32_t*) data+i); //Write to the memory
+			// address[i] = data_ptr[i]; //Write to the memory
       FLASH->CTLR = CR_PAGE_PG | FLASH_CTLR_BUF_LOAD; // Load the buffer.
       while(FLASH->STATR & FLASH_STATR_BSY);  // Only needed if running from RAM.
     }

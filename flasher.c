@@ -179,7 +179,7 @@ int do_backup() {
 
 	Delay_Ms(2);
 	flash_unlock(false, false);
-	printf("\nFlash unlocked\n");
+	printf("Flash unlocked\n");
 	Delay_Ms(10);
 	
 	ret = flash_write_bulk((uint8_t*)BACKUP_ADDR, (uint8_t*)BOOTLOAD_ADDR, 1920, true);
@@ -195,7 +195,7 @@ int write_bootloader(bool from_backup) {
 	ret = flash_unlock(false, true);
 
 	if (!ret) {
-		printf("\nFlash unlocked\n");
+		printf("Flash unlocked\n");
 	} else {
 		printf("\nFailed to unlock flash: %d\n", ret);
 		return ret;
@@ -265,7 +265,7 @@ int main() {
 				if (check_bootloader()) {
 					printf("\nCurrent bootloader is the same as we have here.\n");
 					if (backup == -1) {
-						printf("But there is a backup.\nType 'r' to restore the backup");
+						printf("But there is a backup.\nType 'r' to restore the backup\n");
 						ui_state = 4;
 					} else {
 						printf("Nothing to update\n");
@@ -289,7 +289,7 @@ int main() {
 
 		case 1:
 			if (last == 'b') {
-				printf("Backing up");
+				printf("Backing up\n");
 				if (!do_backup()) {
 					printf("Type 'u' to update the bootloader\n");
 					ui_state = 2;
@@ -302,8 +302,8 @@ int main() {
 
 		case 2:
 			if (last == 'u') {
-				ui_state = 5;
-				printf("Writing bootloader");
+				// ui_state = 5;
+				printf("Writing bootloader\n");
 				write_bootloader(false);
 				ui_state = 10;
 				last = 0;	
@@ -312,36 +312,39 @@ int main() {
 
 		case 3:
 			if (last == 'r') {
-				ui_state = 5;
-				printf("Restoring from backup");
+				// ui_state = 5;
+				printf("Restoring from backup\n");
 				write_bootloader(true);
 				ui_state = 10;
-				last = 0;	
+				last = 0;
 			} else if (last == 'u') {
-				ui_state = 5;
-				printf("Writing bootloader");
+				// ui_state = 5;
+				printf("Writing bootloader\n");
 				write_bootloader(false);
 				ui_state = 10;
-				last = 0;	
+				last = 0;
 			}
+			break;
 
 		case 4:
 			if (last == 'r') {
-				ui_state = 5;
-				printf("Restoring from backup");
+				// ui_state = 5;
+				printf("Restoring from backup\n");
 				write_bootloader(true);
 				ui_state = 10;
-				last = 0;	
-			}		
+				last = 0;
+			}
+			break;
 		
 		case 10:
 			printf("You can now disconnect the device\n\n");
 			ui_state++;
+			break;
 		
 		default:
-			
 			break;
 		}
+		last = 0;
 		// Ack the terminal (minichlink needs this)
 		printf("%c", last);
   }
