@@ -9,9 +9,13 @@ It is an interactive tool that requires you to use USB terminal either with mini
 
 ``git clone https://github.com/monte-monte/ch32_user_bootloader_flasher.git --recursive``
 
-``cd ch32_user_bootloader_flasher``
+``cd ch32_user_bootloader_flasher/ch32v003fun/minichlink``
 
-Place your bootloader binary as a ``bootloader.bin`` file in this folder (make sure that it's not bigger than 1920 bytes).
+``make clean all``
+
+``cd ../..``
+
+Place your bootloader binary as a ``bootloader.bin`` file in this folder: ``ch32_user_bootloader_flasher`` (make sure that it's not bigger than 1920 bytes).
 
 ``make clean all``
 
