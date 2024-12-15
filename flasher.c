@@ -13,7 +13,6 @@ uint8_t scratch[80];
 volatile uint8_t print_buf[8] = {0x8A, 'd', 'm', 'l', 'o', 'c', 'k'};
 volatile uint8_t transmission_done;
 
-uint32_t count;
 bool dm_unlocked = false;
 bool backup_present = false;
 
@@ -29,7 +28,6 @@ volatile int last = 0;
 // Process incomming strings from the terminal
 void handle_debug_input(int numbytes, uint8_t * data) {
 	last = data[0];
-	count += numbytes;
 }
 
 // DM unlock sequence taken from minichlik's code
@@ -43,7 +41,6 @@ void attempt_unlock(uint8_t t1coeff) {
     MCFWriteReg32(DMABSTRACTAUTO, 0x00000000, t1coeff);
     MCFWriteReg32(DMCONTROL, 0x80000001 | (1<<10), t1coeff); 
     MCFWriteReg32(DMCONTROL, 0x40000001 | (1<<10), t1coeff);
-    count = 0;
   }
 }
 
@@ -87,8 +84,8 @@ void usb_handle_hid_get_report_start(struct usb_endpoint * e, int reqLen, uint32
     if ((*DMDATA0 != *DMDATA1) && *DMDATA0) dm_unlocked = true;
     if (dm_unlocked) {
 			// Copy data from DMDATA0/1 and clear them to signal to printf that it has been read
-      memcpy(print_buf, (uint8_t*)DMDATA0, 4);
-      memcpy(print_buf+4, (uint8_t*)DMDATA1, 4);
+      memcpy(print_buf, (uint8_t*)DMDATA0, 8);
+      // memcpy(print_buf+4, (uint8_t*)DMDATA1, 4);
       *DMDATA0 = 0x0;
       *DMDATA1 = 0x0;
     }
@@ -302,7 +299,6 @@ int main() {
 
 		case 2:
 			if (last == 'u') {
-				// ui_state = 5;
 				printf("Writing bootloader\n");
 				write_bootloader(false);
 				ui_state = 10;
@@ -312,13 +308,11 @@ int main() {
 
 		case 3:
 			if (last == 'r') {
-				// ui_state = 5;
 				printf("Restoring from backup\n");
 				write_bootloader(true);
 				ui_state = 10;
 				last = 0;
 			} else if (last == 'u') {
-				// ui_state = 5;
 				printf("Writing bootloader\n");
 				write_bootloader(false);
 				ui_state = 10;
@@ -328,7 +322,6 @@ int main() {
 
 		case 4:
 			if (last == 'r') {
-				// ui_state = 5;
 				printf("Restoring from backup\n");
 				write_bootloader(true);
 				ui_state = 10;

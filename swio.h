@@ -36,13 +36,13 @@ static inline void Send1Bit(uint8_t t1coeff)
 
 	AFIO->PCFR1 |= AFIO_PCFR1_SWJ_CFG_DISABLE;
 	funDigitalWrite(PD1, 0);
+	PrecDelay(t1coeff);
   AFIO->PCFR1 &= ~(AFIO_PCFR1_SWJ_CFG_DISABLE);
-  PrecDelay(t1coeff);
   
 	AFIO->PCFR1 |= AFIO_PCFR1_SWJ_CFG_DISABLE;
 	funDigitalWrite(PD1, 1);
-  AFIO->PCFR1 &= ~(AFIO_PCFR1_SWJ_CFG_DISABLE);
 	PrecDelay(t1coeff);
+  AFIO->PCFR1 &= ~(AFIO_PCFR1_SWJ_CFG_DISABLE);
 }
 
 static inline void Send0Bit(uint8_t t1coeff)
@@ -51,12 +51,13 @@ static inline void Send0Bit(uint8_t t1coeff)
 	// High for a nominal period of time.
 	AFIO->PCFR1 |= AFIO_PCFR1_SWJ_CFG_DISABLE;
 	funDigitalWrite(PD1, 0);
-  AFIO->PCFR1 &= ~(AFIO_PCFR1_SWJ_CFG_DISABLE);
-	PrecDelay(t1coeff*4);
-	AFIO->PCFR1 |= AFIO_PCFR1_SWJ_CFG_DISABLE;
-	funDigitalWrite(PD1, 1);
+	PrecDelay(t1coeff*3);
   AFIO->PCFR1 &= ~(AFIO_PCFR1_SWJ_CFG_DISABLE);
 	PrecDelay(t1coeff);
+	AFIO->PCFR1 |= AFIO_PCFR1_SWJ_CFG_DISABLE;
+	funDigitalWrite(PD1, 1);
+	PrecDelay(t1coeff);
+  AFIO->PCFR1 &= ~(AFIO_PCFR1_SWJ_CFG_DISABLE);
 }
 
 // returns 0 if 0
