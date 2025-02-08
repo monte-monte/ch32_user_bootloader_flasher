@@ -33,13 +33,27 @@ void handle_debug_input(int numbytes, uint8_t * data) {
 // DM unlock sequence taken from minichlik's code
 void attempt_unlock(uint8_t t1coeff) {
   if (*DMDATA0 == *DMDATA1 && *DMDATA0) {
+		funPinMode(PD1, GPIO_Speed_50MHz | GPIO_CNF_OUT_PP);
     AFIO->PCFR1 &= ~(AFIO_PCFR1_SWJ_CFG);
-    funPinMode(PD1, GPIO_Speed_50MHz | GPIO_CNF_OUT_PP);
+		funDigitalWrite(PD1, 0);
     MCFWriteReg32(DMSHDWCFGR, 0x5aa50000 | (1<<10), t1coeff); // Shadow Config Reg
+		AFIO->PCFR1 &= ~(AFIO_PCFR1_SWJ_CFG);
+		funDigitalWrite(PD1, 0);
     MCFWriteReg32(DMCFGR, 0x5aa50000 | (1<<10), t1coeff); // CFGR (1<<10 == Allow output from slave)
+		AFIO->PCFR1 &= ~(AFIO_PCFR1_SWJ_CFG);
+		funDigitalWrite(PD1, 0);
+		MCFWriteReg32(DMSHDWCFGR, 0x5aa50000 | (1<<10), t1coeff);
+		AFIO->PCFR1 &= ~(AFIO_PCFR1_SWJ_CFG);
+		funDigitalWrite(PD1, 0);
     MCFWriteReg32(DMCFGR, 0x5aa50000 | (1<<10), t1coeff); 
+		AFIO->PCFR1 &= ~(AFIO_PCFR1_SWJ_CFG);
+		funDigitalWrite(PD1, 0);
     MCFWriteReg32(DMABSTRACTAUTO, 0x00000000, t1coeff);
+		AFIO->PCFR1 &= ~(AFIO_PCFR1_SWJ_CFG);
+		funDigitalWrite(PD1, 0);
     MCFWriteReg32(DMCONTROL, 0x80000001 | (1<<10), t1coeff); 
+		AFIO->PCFR1 &= ~(AFIO_PCFR1_SWJ_CFG);
+		funDigitalWrite(PD1, 0);
     MCFWriteReg32(DMCONTROL, 0x40000001 | (1<<10), t1coeff);
   }
 }
